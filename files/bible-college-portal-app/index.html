@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cornerstone Bible College · Student Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f5f8;--surface:#fff;--ink:#17233a;--muted:#5d6980;--line:#d9dee7;--accent:#1f5f55;--accent-ink:#fff;--mark:#f1dfae;--danger:#a3322b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1624;--surface:#172033;--ink:#e8ecf4;--muted:#9aa6bd;--line:#2a3550;--accent:#5fbfae;--accent-ink:#0c1a17;--mark:#5a4a1c;--danger:#ef8a82;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1624;--surface:#172033;--ink:#e8ecf4;--muted:#9aa6bd;--line:#2a3550;--accent:#5fbfae;--accent-ink:#0c1a17;--mark:#5a4a1c;--danger:#ef8a82;color-scheme:dark}
+:root[data-theme="amoled"]{--bg:#000;--surface:#000;--ink:#f2f2f2;--muted:#9a9a9a;--line:#2a2a2a;--accent:#5fbfae;--accent-ink:#0c1a17;--mark:#5a4a1c;--danger:#ef8a82;color-scheme:dark}
+:root[data-theme="amoled"] .lp-nav,:root[data-theme="amoled"] .lp-hero,:root[data-theme="amoled"] .verse{background:#000}
+:root[data-theme="amoled"] .lp-nav{border-bottom:1px solid var(--line)}
+:root[data-theme="amoled"] .auth-side{background:#000;color:#f2f2f2;border-right:1px solid var(--line)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Public Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:Literata,Georgia,serif;font-weight:600;line-height:1.25;margin:0}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:.6rem 1.1rem;font-weight:600;cursor:pointer}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+.btn.link{background:none;color:var(--muted);padding:.3rem .5rem;font-weight:500;text-decoration:underline}
+input,textarea,select{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:.6rem .7rem}
+label{display:block;font-weight:500;font-size:.9rem;margin:.9rem 0 .3rem}
+.hidden{display:none!important}
+.err{color:var(--danger);font-size:.9rem;min-height:1.3em;margin:.6rem 0 0}
+
+/* Drawer */
+.menu-btn{background:none;border:1px solid transparent;border-radius:6px;padding:.4rem;color:inherit;cursor:pointer;display:grid;place-items:center}
+.hdr-r{display:flex;align-items:center;gap:.8rem}
+.hdr-l{display:flex;align-items:center;gap:.3rem;min-width:0}
+.hdr-l strong{margin-left:.4rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bell{color:var(--muted)}
+.bell.unread{color:#e5483f}
+.bell.unread svg{fill:currentColor}
+#scrim{position:fixed;inset:0;background:rgba(8,14,28,.5);opacity:0;pointer-events:none;transition:opacity .2s;z-index:20}
+#scrim.open{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;left:0;bottom:0;width:min(340px,88vw);background:var(--surface);color:var(--ink);border-right:1px solid var(--line);transform:translateX(-100%);transition:transform .25s;z-index:21;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#drawer.open{transform:none}
+.dhead{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.2rem;border-bottom:1px solid var(--line)}
+.dhead strong{font-family:Literata,Georgia,serif}
+#dnav{flex:1;overflow-y:auto;padding:.5rem 0}
+#dnav button{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;background:none;border:0;border-left:3px solid transparent;padding:.7rem 1.2rem;cursor:pointer;font-size:.98rem}
+#dnav button small{color:var(--muted);font-size:.75rem}
+#dnav button:hover{background:var(--bg)}
+#dnav button[aria-current="true"]{border-left-color:var(--accent);background:var(--bg);font-weight:600}
+.dfoot{border-top:1px solid var(--line);padding:1rem 1.2rem;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.tbl{width:100%;border-collapse:collapse;max-width:560px}.tbl td{padding:.55rem 0;border-bottom:1px solid var(--line)}.tbl td:last-child{text-align:right;white-space:nowrap}.tbl .strong td{font-weight:600}
+.btn:disabled{opacity:.6;cursor:default}
+.chip{background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:.05rem .45rem;font-size:.82rem;font-weight:500;color:var(--ink)}.chip.late{color:var(--danger);border-color:var(--danger)}
+.sub-box{border-top:1px solid var(--line);margin-top:.9rem;padding-top:.8rem}.sub-box label{margin-top:.6rem}.sub-box p{max-width:68ch}
+.flist{list-style:none;padding:0;margin:.4rem 0}.flist li{padding:.2rem 0;font-size:.92rem}.flist small{color:var(--muted)}
+input[type=file]{padding:.5rem}
+.tbl.wrap td:last-child{white-space:normal}
+.ttabs{max-width:420px;margin-top:0}
+.gscroll{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);margin-top:1rem}
+.gtbl{border-collapse:collapse;min-width:100%;font-size:.92rem}.gtbl th,.gtbl td{padding:.45rem .6rem;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.gtbl th{font-weight:600;color:var(--muted);font-size:.82rem}.gtbl td small{color:var(--muted)}
+.gtbl input{width:4.6rem;padding:.35rem .4rem;text-align:right}.gtbl input.bad{border-color:var(--danger);outline:1px solid var(--danger)}
+.tutor-cta{display:inline-flex;flex-wrap:wrap;gap:.4rem;align-items:center;border:1px solid #8fa0c0;border-radius:8px;padding:.45rem .9rem;margin-top:1.8rem;color:#dbe2f0;font-size:.92rem}
+.tutor-cta .btn{color:#f1c75b;padding:.2rem .3rem}
+@media (max-width:760px){#tName{display:none}}
+.dtheme{padding:.8rem 1.2rem;border-top:1px solid var(--line)}.dtheme span{display:block;font-size:.85rem;color:var(--muted);margin-bottom:.4rem}
+@media (max-width:760px){#who{display:none}}
+@media (prefers-reduced-motion:reduce){#drawer,#scrim{transition:none}}
+
+/* Landing */
+.lp-nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem clamp(1rem,4vw,3rem);background:#0e1830;color:#fff;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.lp-nav strong{font-family:Literata,Georgia,serif;font-size:1.05rem}
+.lp-nav .links{display:flex;gap:1rem;align-items:center}
+.navlink{background:none;border:0;color:#dbe2f0;cursor:pointer;font-size:.92rem;padding:.3rem .4rem}
+.btn.gold{background:#f1c75b;color:#1a2238}
+.btn.light{background:none;border:1px solid #8fa0c0;color:#fff}
+.lp-hero{position:relative;background:linear-gradient(#0e1830,#1d3b4d 85%);color:#fff;min-height:80vh;display:flex;align-items:center;overflow:hidden}
+.hero-art{position:absolute;inset:0;width:100%;height:100%}
+.hero-in{position:relative;padding:4rem clamp(1.2rem,6vw,5rem) 9rem;max-width:780px}
+.eyebrow{color:#f1c75b;font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:.8rem;margin:0 0 1rem}
+.hero-in h1{font-size:clamp(2.3rem,6.5vw,4.2rem)}
+.hero-in p.sub2{font-size:1.15rem;color:#dbe2f0;max-width:50ch;margin:1.2rem 0 2rem}
+.cta{display:flex;flex-wrap:wrap;gap:.8rem}
+.cta .btn{padding:.85rem 1.5rem;font-size:1.02rem}
+.lp-sec{max-width:1100px;margin:0 auto;padding:3.5rem clamp(1.2rem,4vw,2rem)}
+.lp-sec h2{font-size:clamp(1.5rem,3vw,2rem);margin-bottom:.4rem}
+.lead{color:var(--muted);margin:0 0 1.8rem;max-width:60ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1.2rem}
+.card h3{font-size:1.05rem;margin:.5rem 0 .3rem}
+.card p{margin:0;color:var(--muted);font-size:.93rem}
+.num{display:inline-grid;place-items:center;width:2rem;height:2rem;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-weight:600}
+.verse{background:#0e1830;color:#fff;text-align:center;padding:3.5rem 1.5rem}
+.verse blockquote{font-family:Literata,Georgia,serif;font-size:clamp(1.3rem,3vw,2rem);max-width:30ch;margin:0 auto .8rem}
+.verse cite{color:#f1c75b;font-style:normal}
+.lp-foot{text-align:center;padding:3.5rem 1.5rem;border-top:1px solid var(--line)}
+.lp-foot p{color:var(--muted);margin:.4rem 0 1.4rem}
+@media (max-width:760px){.lp-nav .navlink{display:none}.lp-hero{min-height:72vh}.hero-in{padding-bottom:7rem}}
+
+/* Auth */
+.auth{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr}
+.auth-side{background:var(--ink);color:var(--bg);padding:3rem;display:flex;flex-direction:column;justify-content:flex-end}
+.auth-side blockquote{font-family:Literata,Georgia,serif;font-size:clamp(1.5rem,3vw,2.3rem);line-height:1.3;margin:0 0 1rem;max-width:18ch}
+.auth-side p{margin:0;opacity:.75}
+.auth-form{padding:3rem;display:flex;flex-direction:column;justify-content:center;max-width:440px;width:100%;margin:auto}
+.tabs{display:flex;gap:.4rem;margin:1.2rem 0 .4rem}
+.tabs button{flex:1;padding:.55rem;border:1px solid var(--line);background:none;border-radius:6px;cursor:pointer;font-weight:500}
+.tabs button[aria-selected="true"],.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tabs.methods{margin:.2rem 0 0}.tabs.methods button{font-size:.88rem}
+.proto{font-size:.8rem;color:var(--muted);margin-top:1.4rem;border-top:1px solid var(--line);padding-top:.8rem}
+
+/* App */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1.5rem;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+header.top strong{font-family:Literata,Georgia,serif;font-size:1.05rem}
+.layout{display:grid;grid-template-columns:260px 1fr;max-width:1100px;margin:0 auto;min-height:calc(100vh - 60px)}
+nav.courses{padding:1.5rem 1rem;border-right:1px solid var(--line)}
+nav.courses h2{font-size:.95rem;color:var(--muted);margin:0 .6rem .6rem;font-family:"Public Sans",sans-serif;font-weight:600}
+nav.courses button{display:block;width:100%;text-align:left;background:none;border:0;border-left:3px solid transparent;padding:.6rem .7rem;cursor:pointer;border-radius:0 6px 6px 0}
+nav.courses button small{display:block;color:var(--muted)}
+nav.courses .enrol-link{color:var(--accent);font-weight:600;margin-top:.5rem}
+.meta .btn{padding:.4rem .9rem;font-size:.85rem}.meta .btn:first-of-type{margin-left:auto}
+nav.courses button[aria-current="true"]{border-left-color:var(--accent);background:var(--surface);font-weight:600}
+main{padding:1.5rem 1.8rem 4rem;min-width:0}
+main h1{font-size:1.7rem}
+.sub{color:var(--muted);margin:.2rem 0 1.5rem}
+.sec{margin-top:2rem}
+.sec>h2{font-size:1.15rem;margin-bottom:.8rem}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;margin-bottom:.8rem}
+.note h3{font-size:1rem}
+.note p{margin:.4rem 0 0;white-space:pre-wrap;max-width:68ch}
+.note .meta{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;font-size:.82rem;color:var(--muted);margin-top:.5rem}
+.ref{background:var(--mark);color:var(--ink);border-radius:4px;padding:.05rem .45rem;font-size:.82rem;font-weight:500}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.form{background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:1rem 1.1rem}
+.form textarea{min-height:110px;resize:vertical}
+.empty{color:var(--muted);padding:.4rem 0}
+.search{max-width:320px;margin:0 0 1rem}
+@media (max-width:760px){
+ .auth{grid-template-columns:1fr}.auth-side{display:none}.auth-form{padding:2rem 1.2rem}
+ .layout{grid-template-columns:1fr}
+ nav.courses{border-right:0;border-bottom:1px solid var(--line);padding:.8rem;display:flex;overflow-x:auto;gap:.4rem}
+ nav.courses h2{display:none}
+ nav.courses button{width:auto;white-space:nowrap;border-left:0;border-bottom:3px solid transparent;border-radius:0}
+ nav.courses button[aria-current="true"]{border-bottom-color:var(--accent)}
+ main{padding:1.2rem 1rem 4rem}.row{grid-template-columns:1fr}
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#17233a">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body>
+
+<section id="landing" class="hidden">
+  <header class="lp-nav">
+    <span class="hdr-l"><button class="menu-btn menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><strong>Cornerstone Bible College</strong></span>
+    <div class="links">
+      <button class="navlink" data-scroll="lp-courses">Courses</button>
+      <button class="navlink" data-scroll="lp-how">How it works</button>
+      <button class="navlink" data-tutor="1">Tutor login</button>
+      <button class="btn light" data-go="in">Log in</button>
+      <button class="btn gold" data-go="up">Get started</button>
+    </div>
+  </header>
+  <div class="lp-hero">
+    <svg class="hero-art" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs><radialGradient id="glow" cx="50%" cy="78%" r="55%"><stop offset="0" stop-color="#f1dfae" stop-opacity=".5"/><stop offset="1" stop-color="#f1dfae" stop-opacity="0"/></radialGradient></defs>
+      <rect width="1200" height="600" fill="url(#glow)"/>
+      <g fill="#f1dfae" opacity=".07"><polygon points="600,470 360,0 460,0"/><polygon points="600,470 560,0 650,0"/><polygon points="600,470 740,0 840,0"/><polygon points="600,470 0,120 0,230"/><polygon points="600,470 1200,120 1200,230"/></g>
+      <g fill="#fff" opacity=".65"><circle cx="140" cy="90" r="1.8"/><circle cx="260" cy="170" r="1.3"/><circle cx="980" cy="70" r="1.8"/><circle cx="1090" cy="190" r="1.3"/><circle cx="720" cy="60" r="1.4"/><circle cx="420" cy="50" r="1.4"/><circle cx="60" cy="260" r="1.2"/></g>
+      <path d="M0 470 Q200 410 430 455 T820 445 T1200 430 V600 H0Z" fill="#1d3b4d"/>
+      <path d="M0 525 Q260 460 540 505 T1200 485 V600 H0Z" fill="#17304a"/>
+      <path d="M0 575 Q300 530 650 560 T1200 545 V600 H0Z" fill="#101d33"/>
+      <g stroke="#f1dfae" stroke-width="4" stroke-linecap="round"><path d="M960 440 V396 M948 410 H972"/></g>
+    </svg>
+    <div class="hero-in">
+      <p class="eyebrow">Student portal</p>
+      <h1>Study the Word. Grow in faith.</h1>
+      <p class="sub2">Welcome to Cornerstone Bible College. Join your classmates, read notes from your instructors, and keep your own study notes together in one place.</p>
+      <div class="cta"><button class="btn gold" data-go="up">Create your account</button><button class="btn light" data-go="in">Log in</button></div>
+      <div class="tutor-cta">Are you a tutor? <button class="btn link" data-tutor="1">Go to the tutor portal →</button></div>
+    </div>
+  </div>
+  <div class="lp-sec" id="lp-courses">
+    <h2>Courses to get you started</h2>
+    <p class="lead">Choose the courses you’re taking after you sign up. You can add or drop courses at any time.</p>
+    <div class="grid" id="lpCourses"></div>
+  </div>
+  <div class="lp-sec" id="lp-about">
+    <h2>About the college</h2>
+    <p class="lead">Cornerstone Bible College prepares men and women to know Scripture, live faithfully, and serve the church and their communities. Replace this paragraph with your college’s own mission and statement of faith.</p>
+  </div>
+  <div class="verse"><blockquote>“Thy word is a lamp unto my feet, and a light unto my path.”</blockquote><cite>Psalm 119:105</cite></div>
+  <div class="lp-sec" id="lp-how">
+    <h2>How it works</h2>
+    <p class="lead">Three steps, and you’re ready for class.</p>
+    <div class="grid">
+      <div class="card"><span class="num">1</span><h3>Create your account</h3><p>Sign up with your email, ID number, and student registration number.</p></div>
+      <div class="card"><span class="num">2</span><h3>Enrol in your courses</h3><p>Pick your courses and see your instructors’ notes for each one.</p></div>
+      <div class="card"><span class="num">3</span><h3>Keep your own notes</h3><p>Write private study notes and tag them with the scripture you’re reading.</p></div>
+    </div>
+  </div>
+  <div class="lp-foot">
+    <h2>Ready to begin?</h2>
+    <p>Already a student? Log in with your email, ID number, or registration number.</p>
+    <div class="cta" style="justify-content:center"><button class="btn" data-go="up">Create your account</button><button class="btn ghost" data-go="in">Log in</button></div>
+    <p style="margin-top:1.4rem">Tutor? <button class="btn link" data-tutor="1">Tutor portal login</button></p>
+  </div>
+</section>
+
+<section id="auth" class="auth hidden">
+  <div class="auth-side">
+    <blockquote>Study the Word. Keep what you learn.</blockquote>
+    <p>Cornerstone Bible College student portal</p>
+  </div>
+  <div class="auth-form">
+    <button type="button" class="btn link" id="backHome" style="align-self:flex-start;padding-left:0">← Back to home</button>
+    <h1>Cornerstone Bible College</h1>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tabIn" aria-selected="true">Log in</button>
+      <button role="tab" id="tabUp" aria-selected="false">Create account</button>
+    </div>
+    <div id="methodWrap"><label>Log in with</label>
+      <div class="tabs methods" id="methods"><button type="button" data-m="email" aria-pressed="true">Email</button><button type="button" data-m="id" aria-pressed="false">ID number</button><button type="button" data-m="reg" aria-pressed="false">Reg. number</button></div>
+      <label for="ident" id="identLabel">Student email</label><input id="ident" autocomplete="username"></div>
+    <div id="upWrap" class="hidden">
+      <label for="name">Full name</label><input id="name" autocomplete="name">
+      <label for="email">Student email</label><input id="email" type="email" autocomplete="email">
+      <label for="idno">ID number</label><input id="idno" inputmode="numeric">
+      <label for="regno">Student registration number</label><input id="regno" placeholder="e.g. CBC/2026/0142">
+      <label for="yr">Year of study</label><select id="yr"><option value="1">Year 1</option><option value="2">Year 2</option><option value="3">Year 3</option><option value="4">Year 4</option></select>
+    </div>
+    <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password">
+    <p class="err" id="authErr" role="alert"></p>
+    <button class="btn" id="authBtn">Log in</button>
+    <p class="proto">Prototype: accounts are saved only in this browser and are not secure. The real app would use a server for sign-in and storage.</p>
+  </div>
+</section>
+
+<section id="app" class="hidden">
+  <header class="top">
+    <span class="hdr-l"><button class="menu-btn menu-open" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><button class="menu-btn bell" id="bell" aria-label="Announcements"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button><strong>Cornerstone Bible College</strong></span>
+    <span class="hdr-r"><span id="who"></span></span>
+  </header>
+  <div class="layout">
+    <nav class="courses" id="nav"><h2>My courses</h2></nav>
+    <main id="main"></main>
+  </div>
+</section>
+
+<section id="tauth" class="auth hidden">
+  <div class="auth-side"><blockquote>Teach the Word. Shepherd the class.</blockquote><p>Cornerstone Bible College tutor portal</p></div>
+  <div class="auth-form">
+    <button type="button" class="btn link" id="tBack" style="align-self:flex-start;padding-left:0">← Back to home</button>
+    <h1>Tutor portal</h1>
+    <label for="tEmail">Tutor email</label><input id="tEmail" type="email" autocomplete="username">
+    <label for="tPw">Password</label><input id="tPw" type="password" autocomplete="current-password">
+    <p class="err" id="tErr" role="alert"></p>
+    <button class="btn" id="tBtn">Log in</button>
+    <p class="proto">Prototype demo tutors (password for all: tutor1234):<br>amani@cornerstone.example · Old Testament Survey<br>ruth@cornerstone.example · Gospels and Acts<br>samuel@cornerstone.example · Systematic Theology I<br>grace@cornerstone.example · Introduction to Ministry</p>
+  </div>
+</section>
+
+<section id="tutor" class="hidden">
+  <header class="top">
+    <span class="hdr-l"><strong>Cornerstone Bible College · Tutor portal</strong></span>
+    <span class="hdr-r"><span id="tName"></span><select id="tTheme" aria-label="Appearance" style="width:auto"><option value="light">Light</option><option value="dark">Dark</option><option value="amoled">AMOLED</option></select><button class="btn ghost" id="tLogout">Log out</button></span>
+  </header>
+  <div class="lp-sec" style="padding-top:1.5rem">
+    <div class="tabs ttabs" id="tTabs"><button data-v="notes" aria-selected="true">Lecture notes</button><button data-v="grades" aria-selected="false">Gradebook</button></div>
+    <div id="tMain" style="margin-top:1.2rem"></div>
+  </div>
+</section>
+
+<div id="scrim"></div>
+<aside id="drawer" aria-label="Menu" inert>
+  <div class="dhead"><strong>Menu</strong><button class="menu-btn" id="closeBtn" aria-label="Close menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <nav id="dnav"></nav>
+  <div class="dtheme"><span>Appearance</span><div class="tabs methods" id="themeSeg"><button type="button" data-t="light" aria-pressed="false">Light</button><button type="button" data-t="dark" aria-pressed="false">Dark</button><button type="button" data-t="amoled" aria-pressed="false">AMOLED</button></div></div>
+  <div class="dfoot" id="dUser"><span id="who2" style="flex:1"></span><button class="btn ghost" id="logout">Log out</button></div>
+  <div class="dfoot hidden" id="dGuest"><button class="btn" data-go="up">Get started</button><button class="btn ghost" data-go="in">Log in</button><button class="btn link" data-tutor="1">Tutor login</button></div>
+</aside>
+
+<script>
+const COURSES=[
+{id:"ot101",code:"OT101",title:"Old Testament Survey",teacher:"Dr. Amani Okello",d:"A walk through the Hebrew Bible, from creation and covenant to exile and hope.",notes:[
+ {t:"Week 1: The shape of the Hebrew Bible",ref:"Genesis 1–3",b:"Read the creation accounts as the opening of a larger story. Key idea: Genesis frames everything that follows, from covenant to exile to promise.\nReading for next class: Genesis 4–11."},
+ {t:"Week 2: Covenant themes",ref:"Genesis 12; Exodus 19",b:"Trace the covenants with Abraham and at Sinai. Note what each one promises and what it asks of God’s people.\nAssignment: one-page comparison of the two covenants."}]},
+{id:"nt110",code:"NT110",title:"Gospels and Acts",teacher:"Pastor Ruth Mwangi",d:"The life and teaching of Jesus, and the birth and growth of the early church.",notes:[
+ {t:"Week 1: Four portraits of Jesus",ref:"Mark 1",b:"Each Gospel writer has a distinct audience and emphasis. Mark moves quickly and stresses action; compare how each Gospel opens.\nReading: Mark 1–4."},
+ {t:"Week 2: Acts and the early church",ref:"Acts 2",b:"Pentecost marks the start of the church’s mission. Watch how the message moves from Jerusalem outward.\nDiscussion question: what changes for the disciples after Acts 2?"}]},
+{id:"th201",code:"TH201",title:"Systematic Theology I",teacher:"Dr. Samuel Kiptoo",d:"Core Christian doctrine: Scripture, the nature of God, and how the church has explained them.",notes:[
+ {t:"Doctrine of Scripture",ref:"2 Timothy 3:16",b:"Key terms to know: inspiration, authority, canon, illumination. Be ready to define each in your own words.\nQuiz next week."},
+ {t:"Doctrine of God",ref:"Psalm 145",b:"We will cover God’s attributes in two groups. Bring one question you still have about the Trinity."}]},
+{id:"mn150",code:"MN150",title:"Introduction to Ministry",teacher:"Pastor Grace Njeri",d:"Practical foundations for serving in a church or community: teaching, care, and leadership.",notes:[
+ {t:"Preparing a short devotional",ref:"Psalm 23",b:"Structure: observation, meaning, application. Keep it under five minutes.\nAssignment: deliver your devotional to a small group."}]}
+];
+const $=s=>document.querySelector(s);
+const mem={};
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return mem[k]??null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){mem[k]=v}},del(k){try{localStorage.removeItem(k)}catch(e){delete mem[k]}}};
+const users=()=>JSON.parse(store.get("bc_users")||"{}");
+let me=null,tut=null,tview="notes",tcourse=null,tedit=null,pending=null,course=null,view="catalog",query="",editing=null,mode="in";
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function myNotes(){return JSON.parse(store.get("bc_notes_"+me.email)||"[]")}
+function saveNotes(n){store.set("bc_notes_"+me.email,JSON.stringify(n))}
+function enrolled(){return JSON.parse(store.get("bc_enrol_"+me.email)||"[]")}
+function saveEnrol(a){store.set("bc_enrol_"+me.email,JSON.stringify(a))}
+
+function setMode(m){mode=m;$("#tabIn").setAttribute("aria-selected",m==="in");$("#tabUp").setAttribute("aria-selected",m==="up");
+ $("#upWrap").classList.toggle("hidden",m!=="up");$("#methodWrap").classList.toggle("hidden",m!=="in");$("#authBtn").textContent=m==="in"?"Log in":"Create account";
+ $("#pw").autocomplete=m==="in"?"current-password":"new-password";$("#authErr").textContent=""}
+$("#tabIn").onclick=()=>setMode("in");$("#tabUp").onclick=()=>setMode("up");
+
+let method="email";
+const LBL={email:"Student email",id:"ID number",reg:"Student registration number"};
+const norm=s=>s.trim().toUpperCase().replace(/\s+/g,"");
+document.querySelectorAll("#methods button").forEach(b=>b.onclick=()=>{method=b.dataset.m;document.querySelectorAll("#methods button").forEach(x=>x.setAttribute("aria-pressed",x===b));$("#identLabel").textContent=LBL[method];$("#ident").value="";$("#authErr").textContent="";$("#ident").focus()});
+function findUser(u,m,v){
+ if(m==="email"){const e=v.trim().toLowerCase();return u[e]?e:null}
+ const f=m==="id"?"idNo":"regNo";
+ return Object.keys(u).find(k=>u[k][f]&&norm(u[k][f])===norm(v))||null;
+}
+$("#authBtn").onclick=()=>{
+ const pw=$("#pw").value,u=users(),err=$("#authErr");let key;
+ if(mode==="up"){
+  const name=$("#name").value.trim(),email=$("#email").value.trim().toLowerCase(),idNo=$("#idno").value.trim(),regNo=$("#regno").value.trim();
+  if(!name){err.textContent="Enter your full name.";return}
+  if(!/^\S+@\S+\.\S+$/.test(email)){err.textContent="Enter a valid email address.";return}
+  if(!idNo){err.textContent="Enter your ID number.";return}
+  if(!regNo){err.textContent="Enter your student registration number.";return}
+  if(pw.length<8){err.textContent="Use a password with at least 8 characters.";return}
+  if(u[email]){err.textContent="An account with this email already exists. Log in instead.";return}
+  if(findUser(u,"id",idNo)){err.textContent="An account with this ID number already exists.";return}
+  if(findUser(u,"reg",regNo)){err.textContent="An account with this registration number already exists.";return}
+  u[email]={name,pw,idNo,regNo,year:Number($("#yr").value)||1};store.set("bc_users",JSON.stringify(u));key=email;
+ }else{
+  const v=$("#ident").value;
+  if(!v.trim()){err.textContent="Enter your "+LBL[method].toLowerCase()+".";return}
+  key=findUser(u,method,v);
+  if(!key||u[key].pw!==pw){err.textContent="These details or the password are incorrect.";return}
+ }
+ me={email:key,name:u[key].name};store.set("bc_session",key);showApp();
+};
+["ident","pw","name","email","idno","regno"].forEach(i=>$("#"+i).addEventListener("keydown",e=>{if(e.key==="Enter")$("#authBtn").click()}));
+$("#logout").onclick=()=>{store.del("bc_session");me=null;$("#pw").value="";showLanding()};
+
+function showAuth(m){closeDrawer();$("#tauth").classList.add("hidden");$("#tutor").classList.add("hidden");$("#app").classList.add("hidden");$("#landing").classList.add("hidden");$("#auth").classList.remove("hidden");if(m)setMode(m);scrollTo(0,0)}
+function showLanding(){closeDrawer();$("#tauth").classList.add("hidden");$("#tutor").classList.add("hidden");$("#app").classList.add("hidden");$("#auth").classList.add("hidden");$("#landing").classList.remove("hidden");scrollTo(0,0)}
+function showApp(){$("#tauth").classList.add("hidden");$("#tutor").classList.add("hidden");$("#auth").classList.add("hidden");$("#landing").classList.add("hidden");$("#app").classList.remove("hidden");for(const o of [pf,pc,reopen])for(const k in o)delete o[k];$("#who").textContent=me.name;updateBell();const en=enrolled();if(en.length){course=en[0];view="course"}else{course=null;view="catalog"}if(pending){if(pending!=="course")view=pending;pending=null}editing=null;query="";render()}
+
+function renderNav(){
+ const en=COURSES.filter(x=>enrolled().includes(x.id));
+ $("#nav").innerHTML='<h2>My courses</h2>'+(en.length?"":'<p class="empty" style="margin:0 .6rem">None yet</p>')+en.map(x=>`<button data-c="${x.id}" ${view==="course"&&x.id===course?'aria-current="true"':''}>${esc(x.title)}<small>${x.code}</small></button>`).join("")+`<button class="enrol-link" data-cat="1" ${view==="catalog"?'aria-current="true"':''}>+ Enrol in a course</button>`;
+ $("#nav").querySelectorAll("button").forEach(b=>b.onclick=()=>{if(b.dataset.cat){view="catalog"}else{course=b.dataset.c;view="course"}editing=null;query="";render()});
+}
+function renderCatalog(){
+ const en=enrolled();
+ $("#main").innerHTML=`<h1>Enrol in a course</h1><p class="sub">${en.length?"Add or drop courses at any time.":"Welcome, "+esc(me.name.split(" ")[0])+". Choose the courses you’re taking to get started."}</p>`+COURSES.map(c=>{const on=en.includes(c.id);return `<article class="note"><h3>${esc(c.title)}</h3><p>${esc(c.d)}</p><div class="meta"><span class="ref">${c.code}</span><span>${esc(c.teacher)}</span>${on?`<button class="btn ghost" data-drop="${c.id}">Drop</button><button class="btn" data-open="${c.id}">Open course</button>`:`<button class="btn" data-enrol="${c.id}">Enrol</button>`}</div></article>`}).join("");
+ document.querySelectorAll("[data-enrol]").forEach(b=>b.onclick=()=>{saveEnrol([...enrolled(),b.dataset.enrol]);render()});
+ document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{course=b.dataset.open;view="course";render()});
+ document.querySelectorAll("[data-drop]").forEach(b=>b.onclick=()=>{const c=COURSES.find(x=>x.id===b.dataset.drop);if(confirm("Drop "+c.title+"? Your personal notes for it will be kept if you enrol again.")){saveEnrol(enrolled().filter(i=>i!==c.id));if(course===c.id)course=null;render()}});
+}
+function render(){
+ renderNav();
+ if(PAGES[view]){PAGES[view]();return}
+ if(view==="catalog"||!course||!enrolled().includes(course)){view="catalog";renderCatalog();renderNav();return}
+ const c=COURSES.find(x=>x.id===course);
+ const q=query.toLowerCase(),mine=myNotes().filter(n=>n.course===course&&(!q||(n.title+n.body+n.ref).toLowerCase().includes(q)));
+ const ed=editing?myNotes().find(n=>n.id===editing):null;
+ $("#main").innerHTML=`
+  <h1>${esc(c.title)}</h1><p class="sub">${c.code} · ${esc(c.teacher)}</p>
+  <section class="sec"><h2>Class notes from your instructor</h2>
+   ${tnotes(c.id).map(n=>`<article class="note"><h3>${esc(n.t)}</h3><p>${esc(n.b)}</p><div class="meta">${n.ref?`<span class="ref">${esc(n.ref)}</span>`:""}</div></article>`).join("")}
+  </section>
+  <section class="sec"><h2>My notes</h2>
+   <input class="search" id="q" type="search" placeholder="Search my notes" aria-label="Search my notes" value="${esc(query)}">
+   <div id="list">${mine.length?mine.map(n=>`<article class="note"><h3>${esc(n.title)}</h3><p>${esc(n.body)}</p><div class="meta">${n.ref?`<span class="ref">${esc(n.ref)}</span>`:""}<span>${new Date(n.ts).toLocaleDateString()}</span>
+     <button class="btn link" data-e="${n.id}">Edit</button><button class="btn link" data-d="${n.id}">Delete</button></div></article>`).join(""):'<p class="empty">'+(q?"No notes match your search.":"No notes yet. Add your first note below.")+"</p>"}</div>
+   <div class="form"><h3>${ed?"Edit note":"New note"}</h3>
+    <div class="row"><div><label for="nt">Title</label><input id="nt" value="${ed?esc(ed.title):""}"></div>
+    <div><label for="nr">Scripture reference (optional)</label><input id="nr" placeholder="e.g. John 3:16" value="${ed?esc(ed.ref):""}"></div></div>
+    <label for="nb">Note</label><textarea id="nb">${ed?esc(ed.body):""}</textarea>
+    <p class="err" id="nerr"></p>
+    <button class="btn" id="save">${ed?"Save changes":"Add note"}</button>
+    ${ed?'<button class="btn ghost" id="cancel" style="margin-left:.5rem">Cancel</button>':""}
+   </div>
+  </section>
+  <section class="sec"><h2>Assignments</h2><div id="assignBox"></div></section>`;
+ renderAssign(c.id);
+ $("#q").oninput=e=>{query=e.target.value;const pos=e.target.selectionStart;render();const i=$("#q");i.focus();i.setSelectionRange(pos,pos)};
+ document.querySelectorAll("[data-e]").forEach(b=>b.onclick=()=>{editing=b.dataset.e;render();$("#nt").focus()});
+ document.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{saveNotes(myNotes().filter(n=>n.id!==b.dataset.d));render()});
+ if($("#cancel"))$("#cancel").onclick=()=>{editing=null;render()};
+ $("#save").onclick=()=>{
+  const title=$("#nt").value.trim(),body=$("#nb").value.trim(),ref=$("#nr").value.trim();
+  if(!title||!body){$("#nerr").textContent="Add a title and some note text before saving.";return}
+  let all=myNotes();
+  if(ed)all=all.map(n=>n.id===ed.id?{...n,title,body,ref}:n);
+  else all.unshift({id:String(Date.now()),course,title,body,ref,ts:Date.now()});
+  saveNotes(all);editing=null;render();
+ };
+}
+
+$("#lpCourses").innerHTML=COURSES.map(c=>`<article class="card"><span class="ref">${c.code}</span><h3>${esc(c.title)}</h3><p>${esc(c.d)}</p><p style="margin-top:.6rem">${esc(c.teacher)}</p></article>`).join("");
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>showAuth(b.dataset.go));
+document.querySelectorAll("[data-tutor]").forEach(b=>b.onclick=()=>showTutorAuth());
+document.querySelectorAll("[data-scroll]").forEach(b=>b.onclick=()=>document.getElementById(b.dataset.scroll).scrollIntoView({behavior:"smooth"}));
+$("#backHome").onclick=showLanding;
+const CUR="KES",money=n=>CUR+" "+Number(n).toLocaleString();
+const ASSIGN={
+ ot101:[
+  {id:"ot1",t:"Compare two covenants",due:"2026-11-06",pts:20,d:"Write a one-page comparison of God\u2019s covenant with Abraham (Genesis 12) and the covenant at Sinai (Exodus 19). For each, say what God promises and what he asks of his people. Draw on the Week 2 notes."},
+  {id:"ot2",t:"Reading response: Genesis 1\u20133",due:"2026-11-13",pts:15,d:"In about 300 words, explain how the creation accounts set up the story that follows. Refer to the text at least twice."}],
+ nt110:[
+  {id:"nt1",t:"Four portraits of Jesus",due:"2026-11-06",pts:20,d:"Compare how two Gospels open, using Mark 1 and one other Gospel. Describe the audience and emphasis you notice in each. Two pages at most."},
+  {id:"nt2",t:"Reflection on Acts 2",due:"2026-11-20",pts:15,d:"Answer the class discussion question: what changes for the disciples after Acts 2? Write 400 words and support your answer from the passage."}],
+ th201:[
+  {id:"th1",t:"Key terms: doctrine of Scripture",due:"2026-10-30",pts:10,d:"Define inspiration, authority, canon, and illumination in your own words. Give one Bible reference for each. One page."},
+  {id:"th2",t:"A question about the Trinity",due:"2026-11-20",pts:20,d:"State one question you still have about the Trinity and write a short essay (600 words) exploring it, using what we covered on the doctrine of God."}],
+ mn150:[
+  {id:"mn1",t:"Devotional outline: Psalm 23",due:"2026-11-06",pts:25,d:"Submit a written outline of your five-minute devotional using the observation, meaning, and application structure. You will deliver it to a small group in class."}]
+};
+const pf={},pc={},reopen={};
+const subs=()=>JSON.parse(store.get("bc_sub_"+me.email)||"{}");
+const fmtSize=n=>n<1024?n+" B":n<1048576?Math.round(n/1024)+" KB":(n/1048576).toFixed(1)+" MB";
+const fmtDate=d=>new Date(d+"T00:00:00").toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short",year:"numeric"});
+function daysLeft(a){const t=new Date();t.setHours(0,0,0,0);return Math.round((new Date(a.due+"T00:00:00")-t)/864e5)}
+function renderAssign(cid){
+ const list=ASSIGN[cid]||[],sb=subs(),box=$("#assignBox");
+ box.innerHTML=list.map(a=>{
+  const sm=sb[a.id],edit=!sm||reopen[a.id],fl=pf[a.id]||[],dl=daysLeft(a);
+  const chip=sm?'<span class="ref">Submitted</span>':dl<0?'<span class="chip late">Overdue</span>':'<span class="chip">'+(dl===0?"Due today":dl===1?"Due tomorrow":"Due in "+dl+" days")+'</span>';
+  const view=`<div class="sub-box"><strong>Your submission</strong> \u00b7 ${sm?new Date(sm.ts).toLocaleString():""}<ul class="flist">${sm?sm.files.map(f=>`<li>${esc(f.name)} <small>${fmtSize(f.size)}</small></li>`).join(""):""}</ul>${sm&&sm.note?`<p>${esc(sm.note)}</p>`:""}<button class="btn ghost" data-re="${a.id}">Edit submission</button></div>`;
+  const form=`<div class="sub-box"><label for="f_${a.id}">Attach files (PDF, Word, text, or image; up to 10 MB each)</label><input id="f_${a.id}" type="file" multiple accept=".pdf,.doc,.docx,.odt,.txt,.jpg,.jpeg,.png"><ul class="flist">${fl.map((f,i)=>`<li>${esc(f.name)} <small>${fmtSize(f.size)}</small> <button class="btn link" data-rm="${a.id}:${i}">Remove</button></li>`).join("")}</ul><label for="n_${a.id}">Comment for your instructor (optional)</label><textarea id="n_${a.id}" rows="3">${esc(pc[a.id]!==undefined?pc[a.id]:(sm?sm.note:""))}</textarea><p class="err" id="e_${a.id}"></p><button class="btn" data-sub="${a.id}">${sm?"Resubmit":"Submit assignment"}</button>${sm?` <button class="btn ghost" data-can="${a.id}">Cancel</button>`:""}${sm?'<p class="proto">Attach your updated files. They replace your earlier submission.</p>':""}</div>`;
+  return `<article class="note"><h3>${esc(a.t)}</h3><div class="meta">${chip}<span>Due ${fmtDate(a.due)}</span><span>${a.pts} marks</span></div><p>${esc(a.d)}</p>${edit?form:view}</article>`}).join("")||'<p class="empty">No assignments for this course yet.</p>';
+ const keep=()=>box.querySelectorAll("textarea").forEach(t=>pc[t.id.slice(2)]=t.value);
+ box.querySelectorAll("textarea").forEach(t=>t.oninput=()=>pc[t.id.slice(2)]=t.value);
+ box.querySelectorAll("input[type=file]").forEach(inp=>inp.onchange=()=>{keep();const id=inp.id.slice(2);let msg="";const ok=[];[...inp.files].forEach(f=>{if(f.size>10*1048576)msg=f.name+" is over 10 MB, so it wasn\u2019t added.";else ok.push(f)});pf[id]=[...(pf[id]||[]),...ok];renderAssign(cid);if(msg)$("#e_"+id).textContent=msg});
+ box.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{keep();const[id,i]=b.dataset.rm.split(":");pf[id].splice(+i,1);renderAssign(cid)});
+ box.querySelectorAll("[data-re]").forEach(b=>b.onclick=()=>{reopen[b.dataset.re]=true;renderAssign(cid)});
+ box.querySelectorAll("[data-can]").forEach(b=>b.onclick=()=>{const id=b.dataset.can;delete reopen[id];delete pf[id];delete pc[id];renderAssign(cid)});
+ box.querySelectorAll("[data-sub]").forEach(b=>b.onclick=()=>{const id=b.dataset.sub,fs=pf[id]||[],note=$("#n_"+id).value.trim();
+  if(!fs.length){$("#e_"+id).textContent="Attach at least one file before submitting.";return}
+  const o=subs();o[id]={files:fs.map(f=>({name:f.name,size:f.size})),note,ts:Date.now()};store.set("bc_sub_"+me.email,JSON.stringify(o));
+  delete pf[id];delete pc[id];delete reopen[id];renderAssign(cid)});
+}
+const META={
+ ot101:{fee:18000,when:"Mon and Wed, 9:00\u201310:30",room:"Lecture Hall A",exam:"Mon 7 Dec 2026, 9:00",venue:"Main Hall"},
+ nt110:{fee:18000,when:"Tue and Thu, 9:00\u201310:30",room:"Lecture Hall B",exam:"Wed 9 Dec 2026, 9:00",venue:"Main Hall"},
+ th201:{fee:20000,when:"Mon and Wed, 11:00\u201312:30",room:"Room 3",exam:"Fri 11 Dec 2026, 9:00",venue:"Room 3"},
+ mn150:{fee:15000,when:"Fri, 9:00\u201312:00",room:"Ministry Lab",exam:"Mon 14 Dec 2026, 14:00",venue:"Ministry Lab"}};
+const ROOMS=[{id:"shared",name:"Shared room (4 students)",fee:6000},{id:"double",name:"Double room",fee:9000},{id:"single",name:"Single room",fee:12000},{id:"family",name:"Family unit",fee:20000}];
+const MENU=[["course","My courses"],["catalog","Enrol in a course"],["timetable","Timetable"],["exams","Exams"],["result","Result slip"],["fees","Fees and accounting"],["housing","Accommodation"],["news","Announcements"],["library","Library"],["chapel","Chapel and fellowship"],["about","About the college"],["help","Help and contact"],["profile","My profile"]];
+const enrC=()=>COURSES.filter(c=>enrolled().includes(c.id));
+const house=()=>JSON.parse(store.get("bc_house_"+me.email)||"null");
+const pays=()=>JSON.parse(store.get("bc_pay_"+me.email)||"[]");
+const none=t=>`<p class="empty">${t} <button class="btn link" data-view="catalog">Enrol in a course</button></p>`;
+const cardx=(h,b,tag)=>`<article class="note"><h3>${h}</h3><p>${b}</p>${tag?`<div class="meta">${tag}</div>`:""}</article>`;
+function setPage(t,s,h){$("#main").innerHTML=`<h1>${t}</h1><p class="sub">${s}</p>`+h;document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{view=b.dataset.view;render()})}
+const NEWS0=[
+ {id:"n3",t:"Exam timetable published",b:"End-of-term exams begin on 7 December. Check the Exams tab for your dates and venues.",d:"20 Oct 2026"},
+ {id:"n2",t:"Chapel moves to the main hall",b:"This week’s chapel services will be held in the main hall.",d:"19 Oct 2026"},
+ {id:"n1",t:"Fee payment deadline",b:"Please clear your balance by 30 November. See the Fees and accounting tab.",d:"15 Oct 2026"}];
+const newsAll=()=>[...JSON.parse(store.get("bc_news_extra")||"[]"),...NEWS0];
+const seen=()=>JSON.parse(store.get("bc_seen_"+me.email)||"[]");
+const unread=()=>me?newsAll().filter(n=>!seen().includes(n.id)):[];
+function updateBell(){const n=unread().length,b=$("#bell");b.classList.toggle("unread",n>0);b.setAttribute("aria-label",n?"Announcements: "+n+" new":"Announcements: none new")}
+function markSeen(){store.set("bc_seen_"+me.email,JSON.stringify(newsAll().map(n=>n.id)));updateBell()}
+const PASS={1:40,2:40,3:45,4:50},CRED={ot101:3,nt110:3,th201:4,mn150:2};
+const MID={ot101:72,nt110:65,th201:58,mn150:81};
+const AMARK={ot1:16,ot2:12,nt1:15,nt2:13,th1:8,th2:15,mn1:21};
+const grade=(p,pass)=>p>=70?["A",4]:p>=60?["B",3]:p>=50?["C",2]:p>=pass?["D",1]:["F",0];
+function pubFor(cid,key){const p=JSON.parse(store.get("bc_pub")||"{}");return p[cid]?(p[cid][key]||{}):null}
+function calc(m,asg,year){
+ let e=0,a=0;asg.forEach(x=>{if(m[x.id]!==undefined){e+=m[x.id];a+=x.pts}});
+ let num=0,den=0;if(a){num+=e/a*3000;den+=30}if(m.mid!==undefined){num+=m.mid*20;den+=20}if(m.final!==undefined){num+=m.final*50;den+=50}
+ if(!den)return null;const pct=num/den;return{pct,g:grade(pct,PASS[year]||40),fin:m.final!==undefined}
+}
+function courseResult(c,sb,key,year){
+ const pb=pubFor(c.id,key),asg=ASSIGN[c.id]||[];
+ if(pb){
+  const rows=asg.map(a=>[a.t,pb[a.id]!==undefined?pb[a.id]+" / "+a.pts:"Not marked yet"]);
+  rows.push(["Mid-semester exam",pb.mid!==undefined?pb.mid+" / 100":"Not marked yet"]);
+  rows.push(["End-of-term exam",pb.final!==undefined?pb.final+" / 100":"Pending \u00b7 "+META[c.id].exam]);
+  const r=calc(pb,asg,year);return{rows,pct:r?r.pct:null,prov:!(r&&r.fin)};
+ }
+ let earned=0,avail=0;
+ const rows=asg.map(a=>{const sm=sb[a.id];
+  if(sm){earned+=AMARK[a.id];avail+=a.pts;return[a.t,AMARK[a.id]+" / "+a.pts]}
+  if(daysLeft(a)<0){avail+=a.pts;return[a.t,"Not submitted (0 / "+a.pts+")"]}
+  return[a.t,"Pending (due "+fmtDate(a.due)+")"]});
+ rows.push(["Mid-semester exam",MID[c.id]+" / 100"]);rows.push(["End-of-term exam","Pending \u00b7 "+META[c.id].exam]);
+ const num=MID[c.id]*20+(avail?earned/avail*100*30:0),den=20+(avail?30:0);
+ return{rows,pct:num/den,prov:true};
+}
+const PAGES={
+ timetable(){const en=enrC();setPage("Timetable","Your weekly classes",en.length?en.map(c=>cardx(esc(c.title),esc(META[c.id].when+" \u00b7 "+META[c.id].room),`<span class="ref">${c.code}</span><span>${esc(c.teacher)}</span>`)).join(""):none("You aren\u2019t enrolled in any courses yet."))},
+ exams(){const en=enrC();setPage("Exams","Your end-of-term examination timetable",en.length?en.map(c=>cardx(esc(c.title),esc(META[c.id].exam+" \u00b7 "+META[c.id].venue),`<span class="ref">${c.code}</span><span>Bring your student ID</span>`)).join("")+'<section class="sec"><h2>Results</h2><p class="empty">Your results will appear here after marking is complete.</p></section>':none("You aren\u2019t enrolled in any courses yet."))},
+ fees(){
+  const lines=enrC().map(c=>[c.title+" (tuition)",META[c.id].fee]),h=house();
+  if(h){const r=ROOMS.find(x=>x.id===h.room);lines.push(["Accommodation: "+r.name+" ("+h.status.toLowerCase()+")",r.fee])}
+  const total=lines.reduce((a,l)=>a+l[1],0),pl=pays(),paid=pl.reduce((a,p)=>a+p.amt,0),bal=total-paid;
+  setPage("Fees and accounting","Your statement for this term",
+  `<table class="tbl">${lines.length?lines.map(l=>`<tr><td>${esc(l[0])}</td><td>${money(l[1])}</td></tr>`).join(""):'<tr><td class="empty">No charges yet. Enrol in a course to see tuition.</td><td></td></tr>'}<tr class="strong"><td>Total charges</td><td>${money(total)}</td></tr><tr><td>Payments received</td><td>${money(paid)}</td></tr><tr class="strong"><td>Balance due</td><td>${money(bal)}</td></tr></table>
+  <section class="sec"><h2>Payments</h2>${pl.length?pl.map(p=>cardx(money(p.amt),esc(p.method)+(p.ref?" \u00b7 Ref "+esc(p.ref):""),`<span>${new Date(p.ts).toLocaleDateString()}</span>`)).join(""):'<p class="empty">No payments recorded yet.</p>'}
+  <div class="form"><h3>Record a payment</h3><div class="row"><div><label for="pa">Amount (${CUR})</label><input id="pa" type="number" min="1" inputmode="numeric"></div><div><label for="pm">Method</label><select id="pm"><option>Bank transfer</option><option>Mobile money</option><option>Cash at the bursar\u2019s office</option></select></div></div><label for="pr">Reference (optional)</label><input id="pr"><p class="err" id="perr"></p><button class="btn" id="paySave">Record payment</button><p class="proto">Prototype: no money moves. The real app would connect to your bank or mobile money provider.</p></div></section>`);
+  $("#paySave").onclick=()=>{const amt=Math.round(Number($("#pa").value));if(!(amt>0)){$("#perr").textContent="Enter an amount greater than zero.";return}
+   store.set("bc_pay_"+me.email,JSON.stringify([{id:String(Date.now()),amt,method:$("#pm").value,ref:$("#pr").value.trim(),ts:Date.now()},...pays()]));render()};
+ },
+ housing(){
+  const h=house(),r0=h&&ROOMS.find(x=>x.id===h.room);
+  setPage("Accommodation",h?"Your housing request":"You haven\u2019t requested a room yet",
+  (h?cardx("Your request: "+esc(r0.name),"Status: "+h.status+". The accommodation office will confirm your room. Charge: "+money(r0.fee)+" per term.",'<button class="btn ghost" id="cancelRoom">Cancel request</button>'):"")+
+  `<section class="sec"><h2>${h?"Change your request":"Available rooms"}</h2>`+ROOMS.map(r=>{const on=h&&h.room===r.id;return cardx(esc(r.name),money(r.fee)+" per term",`<button class="btn${on?" ghost":""}" data-room="${r.id}" ${on?"disabled":""}>${on?"Requested":"Request this room"}</button>`)}).join("")+"</section>");
+  document.querySelectorAll("[data-room]").forEach(b=>b.onclick=()=>{store.set("bc_house_"+me.email,JSON.stringify({room:b.dataset.room,status:"Requested",ts:Date.now()}));render()});
+  if($("#cancelRoom"))$("#cancelRoom").onclick=()=>{if(confirm("Cancel your room request?")){store.del("bc_house_"+me.email);render()}};
+ },
+ news(){const un=unread().map(n=>n.id);
+  setPage("Announcements","Latest from the college office",newsAll().map(n=>cardx(esc(n.t)+(un.includes(n.id)?' <span class="ref">New</span>':""),esc(n.b),`<span>${esc(n.d)}</span>`)).join("")+
+  '<div class="form" style="margin-top:1.5rem"><p class="proto" style="border:0;margin:0;padding:0">Prototype: this button pretends the college office posted something, so you can watch the bell turn red. In the real app, staff would post announcements.</p><button class="btn ghost" id="testNews" style="margin-top:.7rem">Post a test announcement</button></div>');
+  markSeen();
+  $("#testNews").onclick=()=>{const ex=JSON.parse(store.get("bc_news_extra")||"[]");ex.unshift({id:"x"+Date.now(),t:"New announcement",b:"This is a test announcement posted from the prototype.",d:new Date().toLocaleDateString()});store.set("bc_news_extra",JSON.stringify(ex));updateBell()}},
+ result(){
+  const u=users()[me.email]||{},yr=u.year||1,pass=PASS[yr],sb=subs(),en=enrC();
+  const head=cardx(esc(me.name),"Registration number: "+esc(u.regNo||"Not on record")+"\nID number: "+esc(u.idNo||"Not on record")+"\nPass mark for Year "+yr+": "+pass+"%",`<label for="yr2" style="margin:0">Year of study</label><select id="yr2" style="width:auto">${[1,2,3,4].map(y=>`<option value="${y}" ${y===yr?"selected":""}>Year ${y}</option>`).join("")}</select>`);
+  let cr=0,pts=0,wsum=0,fails=0;
+  const cards=en.map(c=>{const r=courseResult(c,sb,me.email,yr),cc=CRED[c.id],g=r.pct===null?null:grade(r.pct,pass);
+   if(g){cr+=cc;pts+=g[1]*cc;wsum+=r.pct*cc;if(g[0]==="F")fails++}
+   return `<article class="note"><h3>${esc(c.title)}</h3><div class="meta"><span class="ref">${c.code}</span><span>${cc} credits</span><span>Level ${c.code.replace(/\D/g,"")[0]}00</span></div><table class="tbl wrap" style="margin-top:.7rem">${r.rows.map(x=>`<tr><td>${esc(x[0])}</td><td>${esc(x[1])}</td></tr>`).join("")}<tr class="strong"><td>${r.prov?"Provisional":"Final"} score</td><td>${g?r.pct.toFixed(1)+"% \u00b7 Grade "+g[0]:"Awaiting marks"}</td></tr></table></article>`}).join("");
+  const sum=cardx("Summary","Credits this term: "+cr+"\nWeighted average: "+(wsum/(cr||1)).toFixed(1)+"%\nGrade point average: "+(pts/(cr||1)).toFixed(2)+" / 4.00\n"+(fails?"Standing: "+fails+" course"+(fails>1?"s are":" is")+" below the Year "+yr+" pass mark. Please speak to your instructor.":"Standing: all courses are above the Year "+yr+" pass mark so far."));
+  const scale=cardx("Grading scale","A: 70\u2013100%   B: 60\u201369%   C: 50\u201359%   D: "+pass+"\u201349%   F: below "+pass+"%\nCoursework counts 30%, the mid-semester exam 20%, and the end-of-term exam 50%. Scores stay provisional until the end-of-term exam is marked.");
+  setPage("Result slip","Your results for this term",head+(en.length?cards+sum+scale+'<p class="proto">Prototype: until a tutor publishes marks for a course, the marks shown are sample data. Marks published from the tutor portal replace them.</p>':none("You aren\u2019t enrolled in any courses yet.")));
+  $("#yr2").onchange=e=>{const us=users();us[me.email].year=+e.target.value;store.set("bc_users",JSON.stringify(us));render()};
+ },
+ library(){setPage("Library","Sample resources. Replace these with your college\u2019s own.",
+  cardx("Bible study tools","Concordances, commentaries, and Bible dictionaries available for loan.")+
+  cardx("Course readings","Required and recommended readings for each course, listed by week.")+
+  cardx("Past exam papers","Practice papers from previous years to help you prepare.")+
+  cardx("Opening hours","Monday to Friday, 8:00\u201317:00. Saturday, 9:00\u201313:00."))},
+ chapel(){setPage("Chapel and fellowship","Worship, prayer, and community",
+  cardx("Chapel","Tuesday and Thursday, 8:00. All students are encouraged to attend.")+
+  cardx("Prayer meeting","Friday, 17:00. Open to students and staff.")+
+  cardx("Fellowship groups","Small groups meet weekly for Bible study and prayer. Ask the chaplain’s office to join one."))},
+ about(){setPage("About the college","Cornerstone Bible College",
+  cardx("Our mission","We prepare men and women to know Scripture, live faithfully, and serve the church and their communities.")+
+  cardx("Statement of faith","Replace this with your college\u2019s statement of faith.")+
+  cardx("Our history","Replace this with a short history of the college."))},
+ help(){setPage("Help and contact","Sample contacts. Replace these with your own.",
+  cardx("Registrar","Enrolment, results, and records.","<span>registrar@cornerstone.example</span>")+
+  cardx("Bursar","Fees and payments.","<span>bursar@cornerstone.example</span>")+
+  cardx("Accommodation office","Room requests and housing questions.","<span>housing@cornerstone.example</span>")+
+  cardx("IT support","Help with your portal account.","<span>it@cornerstone.example</span>"))},
+ profile(){const u=users()[me.email]||{};setPage("My profile","Your details on record",
+  cardx(esc(me.name),"Email: "+esc(me.email)+"\nID number: "+esc(u.idNo||"Not on record")+"\nRegistration number: "+esc(u.regNo||"Not on record")+"\nYear of study: Year "+(u.year||1)+"\nCourses enrolled: "+enrolled().length))}
+};
+function buildDrawer(){
+ $("#dUser").classList.toggle("hidden",!me);$("#dGuest").classList.toggle("hidden",!!me);
+ if(me)$("#who2").textContent=me.name;
+ $("#dnav").innerHTML=MENU.map(([id,l])=>`<button data-p="${id}" ${me&&view===id?'aria-current="true"':''}>${l}${!me&&id!=="about"&&id!=="help"?"<small>Log in</small>":""}</button>`).join("");
+ $("#dnav").querySelectorAll("button").forEach(b=>b.onclick=()=>openPage(b.dataset.p));
+}
+function openDrawer(){buildDrawer();$("#drawer").inert=false;$("#drawer").classList.add("open");$("#scrim").classList.add("open");document.querySelectorAll(".menu-open").forEach(b=>b.setAttribute("aria-expanded","true"));$("#dnav button").focus()}
+function closeDrawer(){$("#drawer").classList.remove("open");$("#scrim").classList.remove("open");$("#drawer").inert=true;document.querySelectorAll(".menu-open").forEach(b=>b.setAttribute("aria-expanded","false"))}
+function openPage(p){
+ closeDrawer();
+ if(!me){if(p==="about"||p==="help"){const el=document.getElementById(p==="about"?"lp-about":"lp-foot");if(el)el.scrollIntoView({behavior:"smooth"});return}pending=p;showAuth("in");return}
+ if(p==="course"){const en=enrolled();if(en.length){if(!en.includes(course))course=en[0];view="course"}else view="catalog"}else view=p;
+ editing=null;query="";render();scrollTo(0,0);
+}
+document.querySelectorAll(".menu-open").forEach(b=>b.onclick=openDrawer);
+const TUTORS=[
+ {email:"amani@cornerstone.example",name:"Dr. Amani Okello",pw:"tutor1234",courses:["ot101"]},
+ {email:"ruth@cornerstone.example",name:"Pastor Ruth Mwangi",pw:"tutor1234",courses:["nt110"]},
+ {email:"samuel@cornerstone.example",name:"Dr. Samuel Kiptoo",pw:"tutor1234",courses:["th201"]},
+ {email:"grace@cornerstone.example",name:"Pastor Grace Njeri",pw:"tutor1234",courses:["mn150"]}];
+const SAMPLE=[{k:"s1",n:"Joy Wanjiru",reg:"CBC/2026/0101",y:1},{k:"s2",n:"Peter Otieno",reg:"CBC/2026/0102",y:1},{k:"s3",n:"Faith Achieng",reg:"CBC/2026/0103",y:2},{k:"s4",n:"Daniel Mutua",reg:"CBC/2026/0104",y:1},{k:"s5",n:"Grace Chebet",reg:"CBC/2026/0105",y:3},{k:"s6",n:"Samuel Kamau",reg:"CBC/2026/0106",y:1}];
+function tnotesAll(){let t=JSON.parse(store.get("bc_tnotes")||"null");if(!t){t={};COURSES.forEach(c=>t[c.id]=c.notes.map((n,i)=>({id:c.id+"_s"+i,t:n.t,ref:n.ref,b:n.b})))}return t}
+const tnotes=cid=>tnotesAll()[cid]||[];
+const grades=()=>JSON.parse(store.get("bc_grades")||"{}");
+function roster(cid){const u=users();const real=Object.keys(u).filter(e=>JSON.parse(store.get("bc_enrol_"+e)||"[]").includes(cid)).map(e=>({k:e,n:u[e].name,reg:u[e].regNo||"\u2014",y:u[e].year||1,real:true}));return[...real,...SAMPLE]}
+function postNews(t,b){const ex=JSON.parse(store.get("bc_news_extra")||"[]");ex.unshift({id:"t"+Date.now(),t,b,d:new Date().toLocaleDateString()});store.set("bc_news_extra",JSON.stringify(ex))}
+function hideAllScreens(){["landing","auth","app","tauth","tutor"].forEach(i=>$("#"+i).classList.add("hidden"))}
+function showTutorAuth(){closeDrawer();hideAllScreens();$("#tauth").classList.remove("hidden");$("#tErr").textContent="";scrollTo(0,0)}
+function showTutor(){closeDrawer();hideAllScreens();$("#tutor").classList.remove("hidden");tcourse=tut.courses[0];tview="notes";tedit=null;$("#tName").textContent=tut.name;renderTutor();scrollTo(0,0)}
+$("#tBtn").onclick=()=>{const e=$("#tEmail").value.trim().toLowerCase(),p=$("#tPw").value,t=TUTORS.find(x=>x.email===e&&x.pw===p);if(!t){$("#tErr").textContent="Email or password is incorrect.";return}tut=t;store.set("bc_tsession",t.email);$("#tPw").value="";showTutor()};
+["tEmail","tPw"].forEach(i=>$("#"+i).addEventListener("keydown",e=>{if(e.key==="Enter")$("#tBtn").click()}));
+$("#tBack").onclick=showLanding;
+$("#tLogout").onclick=()=>{store.del("bc_tsession");tut=null;showLanding()};
+$("#tTheme").onchange=e=>{store.set("bc_theme",e.target.value);applyTheme(e.target.value)};
+document.querySelectorAll("#tTabs button").forEach(b=>b.onclick=()=>{tview=b.dataset.v;tedit=null;renderTutor()});
+function renderTutor(){
+ document.querySelectorAll("#tTabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===tview));
+ if(tview==="notes")renderTNotes();else renderGrades();
+}
+function renderTNotes(){
+ const cid=tcourse,c=COURSES.find(x=>x.id===cid),list=tnotes(cid),ed=tedit?list.find(n=>n.id===tedit):null;
+ $("#tMain").innerHTML=`<h1>${esc(c.title)}</h1><p class="sub">${c.code} \u00b7 Lecture notes your students see on their course page</p>
+ ${list.map(n=>`<article class="note"><h3>${esc(n.t)}</h3><p>${esc(n.b)}</p><div class="meta">${n.ref?`<span class="ref">${esc(n.ref)}</span>`:""}<button class="btn link" data-te="${n.id}">Edit</button><button class="btn link" data-td="${n.id}">Delete</button></div></article>`).join("")||'<p class="empty">No notes yet. Post your first lecture note below.</p>'}
+ <div class="form"><h3>${ed?"Edit note":"New lecture note"}</h3>
+  <div class="row"><div><label for="tn_t">Title</label><input id="tn_t" value="${ed?esc(ed.t):""}"></div><div><label for="tn_r">Scripture reference (optional)</label><input id="tn_r" value="${ed?esc(ed.ref||""):""}"></div></div>
+  <label for="tn_b">Note</label><textarea id="tn_b" style="min-height:140px">${ed?esc(ed.b):""}</textarea>
+  <p class="err" id="tn_e"></p>
+  <button class="btn" id="tnSave">${ed?"Save changes":"Post note"}</button>${ed?'<button class="btn ghost" id="tnCancel" style="margin-left:.5rem">Cancel</button>':""}
+  ${ed?"":'<p class="proto">Posting a new note also sends an announcement to your students\u2019 notification bell.</p>'}</div>`;
+ document.querySelectorAll("[data-te]").forEach(b=>b.onclick=()=>{tedit=b.dataset.te;renderTNotes();$("#tn_t").focus()});
+ document.querySelectorAll("[data-td]").forEach(b=>b.onclick=()=>{if(!confirm("Delete this note? Students will no longer see it."))return;const t=tnotesAll();t[cid]=t[cid].filter(n=>n.id!==b.dataset.td);store.set("bc_tnotes",JSON.stringify(t));renderTNotes()});
+ if($("#tnCancel"))$("#tnCancel").onclick=()=>{tedit=null;renderTNotes()};
+ $("#tnSave").onclick=()=>{const title=$("#tn_t").value.trim(),body=$("#tn_b").value.trim(),ref=$("#tn_r").value.trim();
+  if(!title||!body){$("#tn_e").textContent="Add a title and the note text before saving.";return}
+  const t=tnotesAll();
+  if(ed)t[cid]=t[cid].map(n=>n.id===ed.id?{...n,t:title,b:body,ref}:n);
+  else{t[cid]=[...t[cid],{id:cid+"_"+Date.now(),t:title,b:body,ref}];postNews("New lecture note: "+title,c.title+": your tutor has posted a new lecture note.")}
+  store.set("bc_tnotes",JSON.stringify(t));tedit=null;renderTNotes()};
+}
+function updateRow(tr){const k=tr.dataset.k,y=+tr.dataset.y,m=(grades()[tcourse]||{})[k]||{},r=calc(m,ASSIGN[tcourse]||[],y);
+ tr.querySelector(".ctot").textContent=r?r.pct.toFixed(1)+"%"+(r.fin?"":" *"):"\u2014";tr.querySelector(".cgr").textContent=r?r.g[0]:"\u2014"}
+function renderGrades(){
+ const cid=tcourse,c=COURSES.find(x=>x.id===cid),asg=ASSIGN[cid]||[],ro=roster(cid),g=grades()[cid]||{};
+ const pts=JSON.parse(store.get("bc_pubts")||"{}")[cid];
+ const cell=(s,f,max)=>{const m=g[s.k]||{},v=m[f]!==undefined?m[f]:"",isA=f!=="mid"&&f!=="final",sub=isA&&s.real&&JSON.parse(store.get("bc_sub_"+s.k)||"{}")[f];
+  return `<td><input class="gi" type="number" inputmode="decimal" min="0" max="${max}" step="0.5" data-k="${esc(s.k)}" data-f="${f}" value="${v}" aria-label="${esc(s.n)} ${f}">${sub?' <span title="Submitted by the student">\u2713</span>':""}</td>`};
+ $("#tMain").innerHTML=`<h1>Gradebook</h1><p class="sub">${esc(c.title)} \u00b7 ${c.code} \u00b7 ${ro.length} students</p>
+ <div class="meta" style="gap:.8rem;margin:0"><button class="btn" id="gPub">Publish marks to students</button><span id="gSaved" style="color:var(--muted);font-size:.88rem">${pts?"Last published "+new Date(pts).toLocaleString():"Not published yet"}</span></div>
+ <div class="gscroll"><table class="gtbl"><thead><tr><th>Student</th><th>Year</th>${asg.map((a,i)=>`<th title="${esc(a.t)}">A${i+1}<br><small>/${a.pts}</small></th>`).join("")}<th>Mid-sem<br><small>/100</small></th><th>Final exam<br><small>/100</small></th><th>Total</th><th>Grade</th></tr></thead><tbody>
+ ${ro.map(s=>`<tr data-k="${esc(s.k)}" data-y="${s.y}"><td>${esc(s.n)}<br><small>${esc(s.reg)}${s.real?" \u00b7 account":""}</small></td><td>Year ${s.y}</td>${asg.map(a=>cell(s,a.id,a.pts)).join("")}${cell(s,"mid",100)}${cell(s,"final",100)}<td class="ctot"></td><td class="cgr"></td></tr>`).join("")}
+ </tbody></table></div>
+ <p class="sub" style="margin-top:1rem">${asg.map((a,i)=>"A"+(i+1)+": "+esc(a.t)).join(" \u00b7 ")}. Weights: coursework 30%, mid-semester 20%, final exam 50%. A star means the final exam isn\u2019t entered yet, so the total is provisional. A tick beside an assignment mark means the student submitted it. Pass marks rise by year of study (Year 1\u20132: 40%, Year 3: 45%, Year 4: 50%).</p>
+ <p class="proto">Prototype: marks save in this browser. Publishing copies them to the students\u2019 result slips (for students with accounts made in this same browser) and posts an announcement. The first six students are samples.</p>`;
+ document.querySelectorAll("#tMain tr[data-k]").forEach(updateRow);
+ document.querySelectorAll("#tMain input.gi").forEach(inp=>inp.oninput=()=>{
+  const tr=inp.closest("tr"),k=inp.dataset.k,f=inp.dataset.f,v=inp.value;
+  if(v!==""&&(isNaN(+v)||+v<0||+v>+inp.max)){inp.classList.add("bad");return}
+  inp.classList.remove("bad");
+  const all=grades();all[cid]=all[cid]||{};all[cid][k]=all[cid][k]||{};
+  if(v==="")delete all[cid][k][f];else all[cid][k][f]=+v;
+  store.set("bc_grades",JSON.stringify(all));updateRow(tr);$("#gSaved").textContent="Changes saved. Not yet published to students."});
+ $("#gPub").onclick=()=>{const all=grades(),p=JSON.parse(store.get("bc_pub")||"{}"),pt=JSON.parse(store.get("bc_pubts")||"{}");
+  p[cid]=JSON.parse(JSON.stringify(all[cid]||{}));pt[cid]=Date.now();store.set("bc_pub",JSON.stringify(p));store.set("bc_pubts",JSON.stringify(pt));
+  postNews("Marks published: "+c.title,"Your tutor has published marks for "+c.title+". Open the Result slip to see them.");renderGrades()};
+}
+function applyTheme(t){const r=document.documentElement;if(["light","dark","amoled"].includes(t))r.setAttribute("data-theme",t);else r.removeAttribute("data-theme");document.querySelectorAll("#themeSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));const tsel=$("#tTheme");if(tsel)tsel.value=t}
+document.querySelectorAll("#themeSeg button").forEach(b=>b.onclick=()=>{store.set("bc_theme",b.dataset.t);applyTheme(b.dataset.t)});
+let t0=store.get("bc_theme");if(!["light","dark","amoled"].includes(t0))t0=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";applyTheme(t0);
+$("#bell").onclick=()=>openPage("news");$("#closeBtn").onclick=closeDrawer;$("#scrim").onclick=closeDrawer;
+addEventListener("keydown",e=>{if(e.key==="Escape")closeDrawer()});
+(function init(){
+ const s=store.get("bc_session"),u=users();
+ const ts=store.get("bc_tsession"),tt=TUTORS.find(x=>x.email===ts);
+ if(s&&u[s]){me={email:s,name:u[s].name};showApp()}else if(tt){tut=tt;showTutor()}else showLanding();
+})();
+</script>
+<script>if("serviceWorker"in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}</script>
+</body>
+</html>

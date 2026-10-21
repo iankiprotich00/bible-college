@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cornerstone Bible College · Student Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f5f8;--surface:#fff;--ink:#17233a;--muted:#5d6980;--line:#d9dee7;--accent:#1f5f55;--accent-ink:#fff;--mark:#f1dfae;--danger:#a3322b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1624;--surface:#172033;--ink:#e8ecf4;--muted:#9aa6bd;--line:#2a3550;--accent:#5fbfae;--accent-ink:#0c1a17;--mark:#5a4a1c;--danger:#ef8a82;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1624;--surface:#172033;--ink:#e8ecf4;--muted:#9aa6bd;--line:#2a3550;--accent:#5fbfae;--accent-ink:#0c1a17;--mark:#5a4a1c;--danger:#ef8a82;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Public Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:Literata,Georgia,serif;font-weight:600;line-height:1.25;margin:0}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:.6rem 1.1rem;font-weight:600;cursor:pointer}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+.btn.link{background:none;color:var(--muted);padding:.3rem .5rem;font-weight:500;text-decoration:underline}
+input,textarea,select{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:.6rem .7rem}
+label{display:block;font-weight:500;font-size:.9rem;margin:.9rem 0 .3rem}
+.hidden{display:none!important}
+.err{color:var(--danger);font-size:.9rem;min-height:1.3em;margin:.6rem 0 0}
+
+/* Auth */
+.auth{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr}
+.auth-side{background:var(--ink);color:var(--bg);padding:3rem;display:flex;flex-direction:column;justify-content:flex-end}
+.auth-side blockquote{font-family:Literata,Georgia,serif;font-size:clamp(1.5rem,3vw,2.3rem);line-height:1.3;margin:0 0 1rem;max-width:18ch}
+.auth-side p{margin:0;opacity:.75}
+.auth-form{padding:3rem;display:flex;flex-direction:column;justify-content:center;max-width:440px;width:100%;margin:auto}
+.tabs{display:flex;gap:.4rem;margin:1.2rem 0 .4rem}
+.tabs button{flex:1;padding:.55rem;border:1px solid var(--line);background:none;border-radius:6px;cursor:pointer;font-weight:500}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.proto{font-size:.8rem;color:var(--muted);margin-top:1.4rem;border-top:1px solid var(--line);padding-top:.8rem}
+
+/* App */
+header.top{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1.5rem;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+header.top strong{font-family:Literata,Georgia,serif;font-size:1.05rem}
+.layout{display:grid;grid-template-columns:260px 1fr;max-width:1100px;margin:0 auto;min-height:calc(100vh - 60px)}
+nav.courses{padding:1.5rem 1rem;border-right:1px solid var(--line)}
+nav.courses h2{font-size:.95rem;color:var(--muted);margin:0 .6rem .6rem;font-family:"Public Sans",sans-serif;font-weight:600}
+nav.courses button{display:block;width:100%;text-align:left;background:none;border:0;border-left:3px solid transparent;padding:.6rem .7rem;cursor:pointer;border-radius:0 6px 6px 0}
+nav.courses button small{display:block;color:var(--muted)}
+nav.courses button[aria-current="true"]{border-left-color:var(--accent);background:var(--surface);font-weight:600}
+main{padding:1.5rem 1.8rem 4rem;min-width:0}
+main h1{font-size:1.7rem}
+.sub{color:var(--muted);margin:.2rem 0 1.5rem}
+.sec{margin-top:2rem}
+.sec>h2{font-size:1.15rem;margin-bottom:.8rem}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;margin-bottom:.8rem}
+.note h3{font-size:1rem}
+.note p{margin:.4rem 0 0;white-space:pre-wrap;max-width:68ch}
+.note .meta{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;font-size:.82rem;color:var(--muted);margin-top:.5rem}
+.ref{background:var(--mark);color:var(--ink);border-radius:4px;padding:.05rem .45rem;font-size:.82rem;font-weight:500}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.form{background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:1rem 1.1rem}
+.form textarea{min-height:110px;resize:vertical}
+.empty{color:var(--muted);padding:.4rem 0}
+.search{max-width:320px;margin:0 0 1rem}
+@media (max-width:760px){
+ .auth{grid-template-columns:1fr}.auth-side{display:none}.auth-form{padding:2rem 1.2rem}
+ .layout{grid-template-columns:1fr}
+ nav.courses{border-right:0;border-bottom:1px solid var(--line);padding:.8rem;display:flex;overflow-x:auto;gap:.4rem}
+ nav.courses h2{display:none}
+ nav.courses button{width:auto;white-space:nowrap;border-left:0;border-bottom:3px solid transparent;border-radius:0}
+ nav.courses button[aria-current="true"]{border-bottom-color:var(--accent)}
+ main{padding:1.2rem 1rem 4rem}.row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<section id="auth" class="auth hidden">
+  <div class="auth-side">
+    <blockquote>Study the Word. Keep what you learn.</blockquote>
+    <p>Cornerstone Bible College student portal</p>
+  </div>
+  <div class="auth-form">
+    <h1>Cornerstone Bible College</h1>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tabIn" aria-selected="true">Log in</button>
+      <button role="tab" id="tabUp" aria-selected="false">Create account</button>
+    </div>
+    <div id="nameWrap" class="hidden"><label for="name">Full name</label><input id="name" autocomplete="name"></div>
+    <label for="email">Student email</label><input id="email" type="email" autocomplete="email">
+    <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password">
+    <p class="err" id="authErr" role="alert"></p>
+    <button class="btn" id="authBtn">Log in</button>
+    <p class="proto">Prototype: accounts are saved only in this browser and are not secure. The real app would use a server for sign-in and storage.</p>
+  </div>
+</section>
+
+<section id="app" class="hidden">
+  <header class="top">
+    <strong>Cornerstone Bible College</strong>
+    <span><span id="who"></span> <button class="btn ghost" id="logout">Log out</button></span>
+  </header>
+  <div class="layout">
+    <nav class="courses" id="nav"><h2>My courses</h2></nav>
+    <main id="main"></main>
+  </div>
+</section>
+
+<script>
+const COURSES=[
+{id:"ot101",code:"OT101",title:"Old Testament Survey",teacher:"Dr. Amani Okello",notes:[
+ {t:"Week 1: The shape of the Hebrew Bible",ref:"Genesis 1–3",b:"Read the creation accounts as the opening of a larger story. Key idea: Genesis frames everything that follows, from covenant to exile to promise.\nReading for next class: Genesis 4–11."},
+ {t:"Week 2: Covenant themes",ref:"Genesis 12; Exodus 19",b:"Trace the covenants with Abraham and at Sinai. Note what each one promises and what it asks of God’s people.\nAssignment: one-page comparison of the two covenants."}]},
+{id:"nt110",code:"NT110",title:"Gospels and Acts",teacher:"Pastor Ruth Mwangi",notes:[
+ {t:"Week 1: Four portraits of Jesus",ref:"Mark 1",b:"Each Gospel writer has a distinct audience and emphasis. Mark moves quickly and stresses action; compare how each Gospel opens.\nReading: Mark 1–4."},
+ {t:"Week 2: Acts and the early church",ref:"Acts 2",b:"Pentecost marks the start of the church’s mission. Watch how the message moves from Jerusalem outward.\nDiscussion question: what changes for the disciples after Acts 2?"}]},
+{id:"th201",code:"TH201",title:"Systematic Theology I",teacher:"Dr. Samuel Kiptoo",notes:[
+ {t:"Doctrine of Scripture",ref:"2 Timothy 3:16",b:"Key terms to know: inspiration, authority, canon, illumination. Be ready to define each in your own words.\nQuiz next week."},
+ {t:"Doctrine of God",ref:"Psalm 145",b:"We will cover God’s attributes in two groups. Bring one question you still have about the Trinity."}]},
+{id:"mn150",code:"MN150",title:"Introduction to Ministry",teacher:"Pastor Grace Njeri",notes:[
+ {t:"Preparing a short devotional",ref:"Psalm 23",b:"Structure: observation, meaning, application. Keep it under five minutes.\nAssignment: deliver your devotional to a small group."}]}
+];
+const $=s=>document.querySelector(s);
+const mem={};
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return mem[k]??null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){mem[k]=v}},del(k){try{localStorage.removeItem(k)}catch(e){delete mem[k]}}};
+const users=()=>JSON.parse(store.get("bc_users")||"{}");
+let me=null,course=COURSES[0].id,query="",editing=null,mode="in";
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function myNotes(){return JSON.parse(store.get("bc_notes_"+me.email)||"[]")}
+function saveNotes(n){store.set("bc_notes_"+me.email,JSON.stringify(n))}
+
+function setMode(m){mode=m;$("#tabIn").setAttribute("aria-selected",m==="in");$("#tabUp").setAttribute("aria-selected",m==="up");
+ $("#nameWrap").classList.toggle("hidden",m!=="up");$("#authBtn").textContent=m==="in"?"Log in":"Create account";
+ $("#pw").autocomplete=m==="in"?"current-password":"new-password";$("#authErr").textContent=""}
+$("#tabIn").onclick=()=>setMode("in");$("#tabUp").onclick=()=>setMode("up");
+
+$("#authBtn").onclick=()=>{
+ const email=$("#email").value.trim().toLowerCase(),pw=$("#pw").value,name=$("#name").value.trim(),u=users(),err=$("#authErr");
+ if(!/^\S+@\S+\.\S+$/.test(email)){err.textContent="Enter a valid email address.";return}
+ if(mode==="up"){
+  if(!name){err.textContent="Enter your full name.";return}
+  if(pw.length<8){err.textContent="Use a password with at least 8 characters.";return}
+  if(u[email]){err.textContent="An account with this email already exists. Log in instead.";return}
+  u[email]={name,pw};store.set("bc_users",JSON.stringify(u));
+ }else if(!u[email]||u[email].pw!==pw){err.textContent="Email or password is incorrect.";return}
+ me={email,name:u[email].name};store.set("bc_session",email);showApp();
+};
+$("#logout").onclick=()=>{store.del("bc_session");me=null;$("#pw").value="";showAuth()};
+
+function showAuth(){$("#app").classList.add("hidden");$("#auth").classList.remove("hidden")}
+function showApp(){$("#auth").classList.add("hidden");$("#app").classList.remove("hidden");$("#who").textContent=me.name;render()}
+
+function render(){
+ const c=COURSES.find(x=>x.id===course);
+ $("#nav").innerHTML='<h2>My courses</h2>'+COURSES.map(x=>`<button data-c="${x.id}" ${x.id===course?'aria-current="true"':''}>${esc(x.title)}<small>${x.code}</small></button>`).join("");
+ $("#nav").querySelectorAll("button").forEach(b=>b.onclick=()=>{course=b.dataset.c;editing=null;query="";render()});
+ const q=query.toLowerCase(),mine=myNotes().filter(n=>n.course===course&&(!q||(n.title+n.body+n.ref).toLowerCase().includes(q)));
+ const ed=editing?myNotes().find(n=>n.id===editing):null;
+ $("#main").innerHTML=`
+  <h1>${esc(c.title)}</h1><p class="sub">${c.code} · ${esc(c.teacher)}</p>
+  <section class="sec"><h2>Class notes from your instructor</h2>
+   ${c.notes.map(n=>`<article class="note"><h3>${esc(n.t)}</h3><p>${esc(n.b)}</p><div class="meta"><span class="ref">${esc(n.ref)}</span></div></article>`).join("")}
+  </section>
+  <section class="sec"><h2>My notes</h2>
+   <input class="search" id="q" type="search" placeholder="Search my notes" aria-label="Search my notes" value="${esc(query)}">
+   <div id="list">${mine.length?mine.map(n=>`<article class="note"><h3>${esc(n.title)}</h3><p>${esc(n.body)}</p><div class="meta">${n.ref?`<span class="ref">${esc(n.ref)}</span>`:""}<span>${new Date(n.ts).toLocaleDateString()}</span>
+     <button class="btn link" data-e="${n.id}">Edit</button><button class="btn link" data-d="${n.id}">Delete</button></div></article>`).join(""):'<p class="empty">'+(q?"No notes match your search.":"No notes yet. Add your first note below.")+"</p>"}</div>
+   <div class="form"><h3>${ed?"Edit note":"New note"}</h3>
+    <div class="row"><div><label for="nt">Title</label><input id="nt" value="${ed?esc(ed.title):""}"></div>
+    <div><label for="nr">Scripture reference (optional)</label><input id="nr" placeholder="e.g. John 3:16" value="${ed?esc(ed.ref):""}"></div></div>
+    <label for="nb">Note</label><textarea id="nb">${ed?esc(ed.body):""}</textarea>
+    <p class="err" id="nerr"></p>
+    <button class="btn" id="save">${ed?"Save changes":"Add note"}</button>
+    ${ed?'<button class="btn ghost" id="cancel" style="margin-left:.5rem">Cancel</button>':""}
+   </div>
+  </section>`;
+ $("#q").oninput=e=>{query=e.target.value;const pos=e.target.selectionStart;render();const i=$("#q");i.focus();i.setSelectionRange(pos,pos)};
+ document.querySelectorAll("[data-e]").forEach(b=>b.onclick=()=>{editing=b.dataset.e;render();$("#nt").focus()});
+ document.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{saveNotes(myNotes().filter(n=>n.id!==b.dataset.d));render()});
+ if($("#cancel"))$("#cancel").onclick=()=>{editing=null;render()};
+ $("#save").onclick=()=>{
+  const title=$("#nt").value.trim(),body=$("#nb").value.trim(),ref=$("#nr").value.trim();
+  if(!title||!body){$("#nerr").textContent="Add a title and some note text before saving.";return}
+  let all=myNotes();
+  if(ed)all=all.map(n=>n.id===ed.id?{...n,title,body,ref}:n);
+  else all.unshift({id:String(Date.now()),course,title,body,ref,ts:Date.now()});
+  saveNotes(all);editing=null;render();
+ };
+}
+
+(function init(){
+ const s=store.get("bc_session"),u=users();
+ if(s&&u[s]){me={email:s,name:u[s].name};showApp()}else showAuth();
+})();
+</script>
+</body>
+</html>
