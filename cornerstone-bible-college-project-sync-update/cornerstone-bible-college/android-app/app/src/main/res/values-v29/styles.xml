@@ -1,0 +1,7 @@
+<resources>
+    <!-- Follows the phone's light/dark setting, so the web page's prefers-color-scheme matches it. -->
+    <style name="AppTheme" parent="android:Theme.DeviceDefault.DayNight">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+</resources>

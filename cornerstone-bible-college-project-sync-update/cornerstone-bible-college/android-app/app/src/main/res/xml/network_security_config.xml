@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TEST BUILD ONLY: allows plain http so the app can talk to the Python server on your Wi-Fi.
+     Remove this (and use https) before any real release. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

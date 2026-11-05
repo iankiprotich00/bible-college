@@ -1,0 +1,11 @@
+# Android generated files
+**/build/
+**/.gradle/
+**/.idea/
+
+# Local Android configuration
+**/local.properties
+
+# Generated packages
+*.apk
+*.aab
